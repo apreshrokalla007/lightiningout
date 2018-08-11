@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self' https://loans-default-dev-ed.lightning.force.com">
+      <meta http-equiv="X-Frame-Options" content="ALLOW-FROM https://loans-default-dev-ed.lightning.force.com">
+      -->
+
+  <!-- Content-Security-Policy: frame-ancestors 'self' https://cw.na1.hgncloud.com
+X-Frame-Options: ALLOW-FROM https://cw.na1.hgncloud.com -->
+
+  <title>
+    Salesforce Lightnig Out Demo
+  </title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" type="image/icon" href="Cloud Red.ico" />
+</head>
+
+<body>
+
+  <nav role="navigation" class="navbar navbar-default">
+    <div class="container-fluid">
+
+      <div class="navbar-header">
+        <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" class="navbar-toggle">
+          <span class="sr-only">
+            Toggle navigation
+          </span>
+          <span class="icon-bar">
+          </span>
+          <span class="icon-bar">
+          </span>
+          <span class="icon-bar">
+          </span>
+        </button>
+        <a class="navbar-brand">
+          <span class="glyphicon glyphicon-cloud" style="vertical-align : middle"></span> Salesforce Lightning Out Demo
+        </a>
+      </div>
+
+    </div>
+  </nav>
+
+  AccountId:
+  <input id='accountId' type="text">
+  <button type="button" id='submitbutton'>Submit</button>
+  <div id="componentwavedashboard">
+
+  </div>
+
+
+</body>
+
+<script type="text/javascript" src="lib/jquery.js">  </script>
+<script type="text/javascript" src="lib/jqueryCookies.js"> </script>
+<script src="https://loans-default-dev-ed.lightning.force.com/lightning/lightning.out.js"></script>
+<script>
+
+  var apiVersion = 'v37.0',
+    clientId = '3MVG9d8..z.hDcPLnWCSDehAozHKldMsHr_eVHWmvravfAhyB1j9cWSOgm3nDViIY7PUWRxGnp0GwvO.9VTz5',
+    loginUrl = 'https://login.salesforce.com/',
+    client_secret = "3096936461454703555",
+    username = "einstein@discovery.com",
+    password = "shi131984cIv5xUI0qDgaCM3iMlqKKTjZ";
+ 
+function login() { 
+    var url = loginUrl + 'services/oauth2/authorize?grant_type=password' +
+        '&client_id=' + encodeURIComponent(clientId) +
+        '&client_secret=' + encodeURIComponent(client_secret)+
+        '&username=' + encodeURIComponent(username) +
+        '&password=' + encodeURIComponent(password);
+//url = "https://login.salesforce.com/services/oauth2/token?grant_type=password&client_id=3MVG9d8..z.hDcPLnWCSDehAozHKldMsHr_eVHWmvravfAhyB1j9cWSOgm3nDViIY7PUWRxGnp0GwvO.9VTz5&client_secret=3096936461454703555&username=einstein@discovery.com&password=shi131984";
+url = "https://login.salesforce.com/services/oauth2/authorize?display=popup&response_type=token&client_id=3MVG9d8..z.hDcPLnWCSDehAozHKldMsHr_eVHWmvravfAhyB1j9cWSOgm3nDViIY7PUWRxGnp0GwvO.9VTz5&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Foauthcallback.html";
+
+  // $.post(url,
+  //   {
+  //   },
+  //   function(data, status){
+  //       alert("Data: " + data + "\nStatus: " + status);
+  //   });
+
+ $.ajax({
+        url: url,
+        type: "POST",
+        crossDomain: true,
+        dataType: "json",
+        success:function(result){
+            alert(JSON.stringify(result));
+        },
+        error:function(xhr,status,error){
+            alert(status);
+        }
+    });
+
+}
+
+  $(document).ready(function () {
+
+    login();
+    
+    $.cookie("InstURL", 'https://loans-default-dev-ed.my.salesforce.com');
+    $.cookie("AccToken", '00D7F000002ZwCv!AQoAQEFIZpU4u7pgJTYBjPCjALzOCpB3iO6dPYZ_O2eeE.TXyLG6l7X03gEh_5G51wXSMWzm_Z.jPiZtC7kj.JYU64_n5XGi');
+    $.cookie("APIVer", 'v37.0') ;        
+    var id = 'https://login.salesforce.com/id/00D7F000002ZwCvUAK/0057F000000wFKSQA2';
+    $.cookie("idURL",  id) ;
+    strngBrks = id.split('/');
+    $.cookie("LoggeduserId",  strngBrks[strngBrks.length - 1]) ;
+
+    $("#accountId").val($.cookie("accountIdValue"));
+    $("#submitbutton").click(function () {
+      var accountIdValue = $('#accountId').val();
+      console.log('accountIdValue', accountIdValue);
+
+      $.cookie("accountIdValue", accountIdValue);
+      location.reload();
+
+    });
+
+
+
+    var _lightningReady = false;
+    if (!$.cookie("AccToken")) {
+      //   alert("Login to Salesforce First!!!");
+    } else {
+     //createWaveDashboardLightning('NEWS');
+
+    }
+
+
+
+    function setupLightning(callback) {
+      var appName = "c:waveDashboardLightningApp";
+
+
+      if (_lightningReady) {
+        if (typeof callback === "function") {
+          callback();
+        }
+      } else {
+        // Transform the URL for Lightning
+        var url = $.cookie("InstURL");
+        url = url.replace("my.salesforce", "lightning.force");
+        var accessToken = $.cookie("AccToken");
+        $Lightning.use(appName,
+          function () {
+            _lightningReady = true;
+            document.getElementById("componentwavedashboard").style.display = "";
+            if (typeof callback === "function") {
+              callback();
+            }
+          }, url, $.cookie("AccToken"));
+      }
+    }
+
+    function createWaveDashboardLightning(type, subjectId) {
+
+//
+      setupLightning(function () {
+        $Lightning.createComponent("c:waveDashboardLightning", {}, "componentwavedashboard");
+
+      });
+    }
+
+
+  });
+
+
+</script>
+<script> 
+
+</script>
+
+<style type="text/css">
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+
+  .slds-scope:not(html),
+  .slds-scope body,
+  .slds-media__body,
+  .forceChatterStyle .cuf-preamble,
+  .cuf-subPreamble .slds-text-body--small,
+  .slds-post__footer {
+    font-size: 1.0rem !important;
+  }
+</style>
+
+</html>

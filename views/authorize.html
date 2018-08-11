@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script type="text/javascript" src="lib/jquery.js"></script>
+<script type="text/javascript" src="lib/jqueryCookies.js"> </script>   
+<body>
+
+<div id='test' class='test' ng-app="myApp" ng-controller="myCtrl">
+ 
+   
+    Authorize 
+
+    Response Data - {{data}}
+
+</div>
+
+</body>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $http) {
+      //  $http.defaults.headers.common['Authorization'] = 'Bearer '+$.cookie("AccToken");
+        //console.log('$.cookie("AccToken")',$.cookie("AccToken"));
+
+    var apiVersion = 'v37.0',
+    clientId = '3MVG9d8..z.hDcPLnWCSDehAozHKldMsHr_eVHWmvravfAhyB1j9cWSOgm3nDViIY7PUWRxGnp0GwvO.9VTz5',
+    loginUrl = 'https://login.salesforce.com/',
+    client_secret = "3096936461454703555",
+    username = "einstein@discovery.com",
+    password = "shi131984cIv5xUI0qDgaCM3iMlqKKTjZ" ;
+ 
+    var url = loginUrl + 'services/oauth2/authorize?grant_type=password' +
+                '&client_id=' + encodeURIComponent(clientId) +
+                '&client_secret=' + encodeURIComponent(client_secret)+
+                '&username=' + encodeURIComponent(username) +
+                '&password=' + encodeURIComponent(password);
+
+   url = "https://login.salesforce.com/services/oauth2/token?grant_type=refresh_token&client_id=3MVG9d8..z.hDcPLnWCSDehAozHKldMsHr_eVHWmvravfAhyB1j9cWSOgm3nDViIY7PUWRxGnp0GwvO.9VTz5&client_secret=3096936461454703555&refresh_token=5Aep8613hy0tHCYdhz0YLt2BsEtgcvPrpJ6CTxsffSE_facR5HcMgqKL2pbLCFb7XL7cK3C9nOs1y8JElBfnGxJ";
+ // url = "https://login.salesforce.com/services/oauth2/token";
+
+ var param = {
+    	      grant_type: "password",
+    	      client_id : encodeURIComponent(clientId),
+    	      client_secret : encodeURIComponent(client_secret),
+    	      username:encodeURIComponent(username),
+              password:encodeURIComponent(password)};
+          
+     $http.post(url)
+      .then(function(response) {   
+          $scope.data =   response.data;     
+          console.log('response.data',response.data);
+      }).catch(function(e){
+        console.log("Got an error!",e);  
+      });
+
+    // $http({
+    // method: 'POST',
+    // url: url,
+    // headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    // transformRequest: function(obj) {
+    //     var str = [];
+    //     for(var p in obj)
+    //     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    //     return str.join("&");
+    // },
+    // data: param
+    // }).then(function (data) {
+    // console.log('data',data);
+    // });
+
+
+      
+    });
+    </script>
+
+</html>

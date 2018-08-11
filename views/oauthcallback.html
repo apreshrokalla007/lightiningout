@@ -1,0 +1,41 @@
+<html>
+<body> 
+        <script type="text/javascript" src="lib/jquery.js"></script>
+        <script type="text/javascript" src="lib/jqueryCookies.js"></script> 
+<script>
+ var apiVersion = 'v37.0',
+    clientId = '3MVG9d8..z.hDcPLnWCSDehAozHKldMsHr_eVHWmvravfAhyB1j9cWSOgm3nDViIY7PUWRxGnp0GwvO.9VTz5',
+    loginUrl = 'https://login.salesforce.com/',
+    redirectURI = "http://localhost:8081/oauthcallback.html",
+    proxyURL = 'http://localhost:8081/proxy/' ;
+ 
+if (window.location.hash) {
+    var message = decodeURIComponent(window.location.hash.substr(1)),
+        params = message.split('&'),
+        response = {};
+    params.forEach(function (param) {
+        var splitter = param.split('=');
+        response[splitter[0]] = splitter[1];
+    });
+    oauthCallback(response);
+    window.close();
+}
+ 
+function oauthCallback(response) {
+    if (response && response.access_token) { 
+        console.log(response);
+        $.cookie("AccToken",response.access_token ) ;
+        $.cookie("APIVer", apiVersion) ;
+        $.cookie("InstURL",  response.instance_url) ; 
+        $.cookie("idURL",  response.id) ;
+
+        strngBrks = response.id.split('/');
+		$.cookie("LoggeduserId",  strngBrks[strngBrks.length - 1]) ;
+
+        window.location = 'home';
+    }
+    }
+
+</script>
+</body>
+</html>

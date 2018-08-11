@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script type="text/javascript" src="lib/jquery.js"></script>
+<script type="text/javascript" src="lib/jqueryCookies.js"> </script>   
+<body>
+
+<div id='test' class='test' ng-app="myApp" ng-controller="myCtrl">
+ 
+    <div class='bart'>
+        Bart class
+        <div class='bartsub'> Bart sub</div>
+    </div>
+    Welcome 
+
+    Response Data - {{data}}
+
+</div>
+
+</body>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $http) {
+        $http.defaults.headers.common['Authorization'] = 'Bearer '+$.cookie("AccToken");
+        console.log('$.cookie("AccToken")',$.cookie("AccToken"));
+      $http.get("https://ap5.salesforce.com/services/data/v42.0/wave/dashboards/0FK7F000000nHYzWAM")
+      .then(function(response) {   
+          $scope.data =   response.data;     
+          console.log('response.data',response.data);
+      }).catch(function(e){
+        console.log("Got an error!",e);  
+      });
+    });
+    </script>
+
+</html>

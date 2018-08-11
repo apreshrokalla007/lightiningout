@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="lib/jquery.js"></script>
+<script type="text/javascript" src="lib/jqueryCookies.js"></script>
+<script>
+
+    $(document).ready(function () {
+    function redirectHome() {
+        window.location = 'logoutsuccess';
+    }
+
+
+    $("#homebutton").click(function () {
+        window.location = '/';
+    });
+});
+</script>
+
+<body>
+   
+    <div id='test'  style="margin-top: 30px">
+        Logged Out Successsfully.
+
+    </div>
+
+    <button type="button" id="homebutton" style="margin-top: 30px">Login</button>
+
+</body>
+
+</html>

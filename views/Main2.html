@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self' https://loans-default-dev-ed.lightning.force.com">
+      <meta http-equiv="X-Frame-Options" content="ALLOW-FROM https://loans-default-dev-ed.lightning.force.com">
+      -->
+
+  <!-- Content-Security-Policy: frame-ancestors 'self' https://cw.na1.hgncloud.com
+X-Frame-Options: ALLOW-FROM https://cw.na1.hgncloud.com -->
+
+  <title>
+    Salesforce Lightnig Out Demo
+  </title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" type="image/icon" href="Cloud Red.ico" />
+</head>
+
+<body>
+
+  <nav role="navigation" class="navbar navbar-default">
+    <div class="container-fluid">
+
+      <div class="navbar-header">
+        <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" class="navbar-toggle">
+          <span class="sr-only">
+            Toggle navigation
+          </span>
+          <span class="icon-bar">
+          </span>
+          <span class="icon-bar">
+          </span>
+          <span class="icon-bar">
+          </span>
+        </button>
+        <a class="navbar-brand">
+          <span class="glyphicon glyphicon-cloud" style="vertical-align : middle"></span> Salesforce Lightning Out Demo
+        </a>
+      </div>
+
+    </div>
+  </nav>
+
+  <span style="margin-left: 10px;">Artist ID:</span>
+  <input id='artistId' type="text">
+  <button type="button" id='submitbutton'>Submit</button>
+  <button type="button" id ="logoutbutton" style="float:right;margin-right: 10px;">Logout</button>
+   <div id="componentwavedashboard" style="margin-top: 20px;">
+     <!--  Test
+      <iframe id='ifram' src="http://localhost:8000"></iframe> -->
+  </div>
+
+</body>
+
+<script type="text/javascript" src="lib/jquery.js">  </script>
+<script type="text/javascript" src="lib/jqueryCookies.js"> </script>
+<script src="https://loans-default-dev-ed.lightning.force.com/lightning/lightning.out.js"></script>
+<script>
+
+  $(document).ready(function () {
+    // $.cookie("InstURL", 'https://loans-default-dev-ed.my.salesforce.com');
+    //  $.cookie("AccToken", '00D7F000002ZwCv!AQoAQJS4WjTJ0z3LdrtqcV9Pl3iSg7acLBgggIGFZqj3g6DeoM_ONLQJGqkKAzf_UhmwbsVzdcUPeJf0rzSD2.Y_6YreP8s4');
+    // $.cookie("APIVer", 'v37.0') ;  
+    // var id = 'https://login.salesforce.com/id/00D7F000002ZwCvUAK/0057F000000wFKSQA2';      
+    //  $.cookie("idURL",  'https://login.salesforce.com/id/00D7F000002ZwCvUAK/0057F000000wFKSQA2') ;
+    //  strngBrks = id.split('/');
+    //  $.cookie("LoggeduserId",  strngBrks[strngBrks.length - 1]) ;
+    //  $.cookie("BrowserId",  'eD_S1wXmSMmeT8woGacdGA') ;
+
+    //  $.cookie("clientSrc",  '223.182.103.131') ;
+    //  $.cookie("force-proxy-stream",  '!bg09aZZy76GMWONEO5D5HQw5ria6u0ABtnKGGV3TO8Mr7AwObZ/FCwv0sRax0AsWMLy1A103uo6t5A==') ;
+    //  $.cookie("force-stream",  '!GxGFK5v/1S8dEAwbVaolUqV8oG/VtwZYvAFQnE3DBn7X4/ubzFNeJVO3no9tqmLTCYmC2Gq4c2JBHc0=') ;
+    //  $.cookie("inst",  'APP_7F') ;
+    //  $.cookie("sfdc-stream",  '!GxGFK5v/1S8dEAwbVaolUqV8oG/VtwZYvAFQnE3DBn7X4/ubzFNeJVO3no9tqmLTCYmC2Gq4c2JBHc0=') ;
+    //  $.cookie("sid",  '00D7F000002ZwCv!AQoAQBlkI0yVy_Ju8WYUgovGk7TXZSmn0_cAa8lTPozYXradyV1WjQ7adeiTmwlDYZp3aWARSQntkBz4CWhzVLjU1sN6rjxW') ;
+    //  $.cookie("sid_Client",  'F000000wFKSF000002ZwCv') ;
+     
+    
+    var artistIdValue = '';
+    $("#artistId").val($.cookie("artistIdValue"));
+    $("#submitbutton").click(function () {
+      artistIdValue = $('#artistId').val();
+      console.log('artistIdValue', artistIdValue);
+
+      $.cookie("artistIdValue", artistIdValue);
+      var contents = $('#componentwavedashboard').contents();
+      var contentstds = $('#componentwavedashboard').contents().find('.assetContainer waveAsset');
+      $('#componentwavedashboard').contents().find('.assetContainer waveAsset').hide();
+      var contentstds = $('#componentwavedashboard').find('.waveFrame');
+      var contentstds2 = $('#componentwavedashboard').find('.waveFrame').contents().find('.overflowhide');
+      var contentstds3 = $('#componentwavedashboard').find('.waveFrame').contents().find('body.overflowhide');
+
+
+      var find1 = $('.container-fluid').find('.navbar-header');
+      var find2 = $('.container-fluid').find('.navbar-header').find('.navbar-toggle');
+      //var find3 = $('#componentwavedashboard').find('#ifram').hide();
+      var find34 = $('#componentwavedashboard').find('#ifram').contents().find('.container')
+      var find345 = $('#componentwavedashboard').find('#ifram').contents().find('.jumbotron')
+      
+     location.reload();
+    // $("#componentwavedashboard").empty();
+     //var _lightningReady = false;
+    //createWaveDashboardLightning('NEWS');
+
+    });
+
+
+  var logoutUrl = "https://loans-default-dev-ed.my.salesforce.com/services/oauth2/revoke?token=";
+    $("#logoutbutton").click(function () {
+
+     $.ajax({
+      type: 'GET',
+      url: logoutUrl+$.cookie("AccToken"),
+      dataType: 'jsonp',
+      async: false, // this is by default false, so not need to mention
+      crossDomain: true, // tell the browser to allow cross domain calls.
+      success: function(data) {
+        console.log('data',data);
+      },
+       error: function(data) {
+        console.log('errordata',data);
+      },complete: function(xhr, textStatus) {
+        console.log(xhr.status);
+       // if(xhr.status == 200){
+          var cookies = $.cookie();
+          for(var cookie in cookies) {
+            $.removeCookie(cookie);
+          }
+          window.location = 'logoutsuccess';
+       // }
+       } 
+      });
+      
+    });
+
+
+  // setTimeout(function(){
+  //   alert('hidden');
+  //   $('.widget-container widget-container_listselector_8').hide();
+  // }, 18000);
+
+
+    var _lightningReady = false;
+    if (!$.cookie("AccToken")) {
+       //  alert("Login to Salesforce First.");
+      window.location = '/';
+    } else {
+       createWaveDashboardLightning('NEWS');
+    }
+
+ //createWaveDashboardLightning('NEWS');
+
+    function setupLightning(callback) {
+      var appName = "c:waveDashboardLightningApp";
+
+
+      if (_lightningReady) {
+        if (typeof callback === "function") {
+          callback();
+        }
+      } else {
+        // Transform the URL for Lightning
+        var url = $.cookie("InstURL");
+        url = url.replace("my.salesforce", "lightning.force");
+        var accessToken = $.cookie("AccToken");
+        $Lightning.use(appName,
+          function () {
+            _lightningReady = true;
+            document.getElementById("componentwavedashboard").style.display = "";
+            if (typeof callback === "function") {
+              callback();
+            }
+          }, url, $.cookie("AccToken"));
+      }
+    }
+
+    function createWaveDashboardLightning(type, subjectId) {
+
+      setupLightning(function () {
+        try{
+        if($.cookie("artistIdValue") && $.cookie("artistIdValue").length>0)
+        $Lightning.createComponent("c:waveDashboardLightning", {artistId:$.cookie("artistIdValue")}, "componentwavedashboard");
+        }catch(error){
+          console.log('session expired');
+          $("#logoutbutton").click();
+        }//else
+        //$Lightning.createComponent("c:waveDashboardLightning", {}, "componentwavedashboard");
+
+      });
+    }
+
+
+  });
+
+
+</script>
+<script> 
+
+</script>
+
+<style type="text/css">
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+
+  .slds-scope:not(html),
+  .slds-scope body,
+  .slds-media__body,
+  .forceChatterStyle .cuf-preamble,
+  .cuf-subPreamble .slds-text-body--small,
+  .slds-post__footer {
+    font-size: 1.0rem !important;
+  }
+</style>
+
+</html>
